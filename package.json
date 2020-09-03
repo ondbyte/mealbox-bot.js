@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@types/ioredis": "^4.17.3",
-    "ioredis": "^4.17.3",
+    "@types/redis": "^2.8.27",
+    "redis": "^3.0.2",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   }
 }
