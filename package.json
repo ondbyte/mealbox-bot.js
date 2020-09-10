@@ -10,11 +10,11 @@
   "author": "ondbyte",
   "license": "ISC",
   "dependencies": {
+    "@adiwajshing/baileys": "github:adiwajshing/baileys",
     "@types/ioredis": "^4.17.3",
     "@types/redis": "^2.8.27",
     "redis": "^3.0.2",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.2",
-    "whatsapp-web.js": "^1.8.2"
+    "typescript": "^4.0.2"
   }
 }

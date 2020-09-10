@@ -1,19 +1,32 @@
-import fs from "fs"
-import {Client, Location} from "whatsapp-web.js"
+import * as fs from "fs"
+import {
+    WAConnection,
+    MessageType,
+    Presence,
+    MessageOptions,
+    Mimetype,
+    WALocationMessage,
+    MessageLogLevel,
+    WA_MESSAGE_STUB_TYPES,
+    ReconnectMode,
+    ProxyAgent,
+} from "@adiwajshing/baileys"
 
-const SESSION_FILE_PATH = "./session.json"
-///load session
-let sesCfg
-if(fs.existsSync(SESSION_FILE_PATH)){
-    sesCfg = require(SESSION_FILE_PATH)
-}
+async function start(onQr:(qr:string)=>void,onReady:()=>void) {
+    const SESSION_FILE_PATH = "./session.json"
+    const conn = new WAConnection()
+    ///load session
+    let sesCfg
+    fs.existsSync(SESSION_FILE_PATH) && conn.loadAuthInfo(SESSION_FILE_PATH)
 
-const window = new Client({puppeteer:{headless:false},session:sesCfg})
+    conn.connectOptions.timeoutMs = 60*1000
+    conn.connectOptions.maxRetries = 5
 
-///initialize wa web
-window.initialize();
-///listen for events from wa
-window.on("qr",(qr)=>{
+    await conn.connect()
+    //write session
+    const authInfo = conn.base64EncodedAuthInfo()
+    fs.writeFileSync(SESSION_FILE_PATH,JSON.stringify(authInfo,null,"\t"))
+
     
-})
+}
 

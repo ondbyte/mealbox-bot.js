@@ -2,13 +2,14 @@ import { config } from "./config"
 import { redis } from "./redis"
 import {redisio} from "./redisio"
 
-async function main() {
+async function start():Promise<boolean> {
     ///start the redis server
     await redis.startRedis(config.redisServerPath)
     if (!redis.active()) {
         console.log("exiting as redis not available")
-        process.abort()
+        return false
     }
+
     ///connect to cache which is a local redis server
     await redisio.connectToCache(config.redisHost,config.redisPort,config.redisPassword)
     if(!redisio.cacheActive){
@@ -17,8 +18,9 @@ async function main() {
         if(!closed){
             console.log("unable to close redis, please manually close the process if exists")
         }
-        process.abort()
+        return false
     }
+
     ///connect to redis server which acts as our DB
     await redisio.connectToDB(config.redisHost,config.redisPort,config.redisPassword)
     if(!redisio.cacheActive){
@@ -27,12 +29,12 @@ async function main() {
         if(!closed){
             console.log("unable to close redis, please manually close the process if exists")
         }
-        process.abort()
+        return false
     }
     ///setup async setters and getters for redis
     redisio.setupGetterSetter()
     
-    
+    return true
 }
 ///listen for ctrl+c to finish the process
 process.once("SIGINT",async()=>{
@@ -42,5 +44,7 @@ process.once("SIGINT",async()=>{
 })
 
 ///start the program
-main()
+export const app = {
+    start
+}
 
