@@ -17,12 +17,7 @@ async function startRedis(path:string): Promise<boolean> {
             console.log('redis failed to start')
             resolve(false)
         })
-        rp.stdout.on("data", (data) => {
-            console.log(data)
-        })
-        rp.stderr.on("data", (data) => {
-            console.log(data)
-        })
+        
     })
 }
 
@@ -34,11 +29,11 @@ async function stopRedis(): Promise<boolean> {
     return new Promise(
         (resolve)=>{
             if(prc){
-                console.log("stopping redis")
+                console.log("trying to stop redis")
                 resolve(prc.kill("SIGTERM"))
             } else {
-                console.log("no redis instance to stop")
-                resolve(false)
+                console.log("found no redis instance to stop")
+                resolve(true)
             }
         }
     )

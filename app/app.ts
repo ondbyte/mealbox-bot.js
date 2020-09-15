@@ -9,26 +9,19 @@ async function start():Promise<boolean> {
         console.log("exiting as redis not available")
         return false
     }
-
     ///connect to cache which is a local redis server
     await redisio.connectToCache(config.redisHost,config.redisPort,config.redisPassword)
     if(!redisio.cacheActive){
-        console.log("exiting as unable to connect to redis")
-        var closed = await redis.stopRedis()
-        if(!closed){
-            console.log("unable to close redis, please manually close the process if exists")
-        }
+        console.log("unable to connect to cache")
+        stop()
         return false
     }
 
     ///connect to redis server which acts as our DB
     await redisio.connectToDB(config.redisHost,config.redisPort,config.redisPassword)
-    if(!redisio.cacheActive){
-        console.log("exiting as unable to connect to redis")
-        var closed = await redis.stopRedis()
-        if(!closed){
-            console.log("unable to close redis, please manually close the process if exists")
-        }
+    if(!redisio.dbActive){
+        console.log("unable to connect to db")
+        stop()
         return false
     }
     ///setup async setters and getters for redis
@@ -36,15 +29,15 @@ async function start():Promise<boolean> {
     
     return true
 }
-///listen for ctrl+c to finish the process
-process.once("SIGINT",async()=>{
-    await redis.stopRedis()
-    console.log("exiting wab")
-    process.exit()
-})
+
+async function stop():Promise<void> {
+    var b = await redis.stopRedis()
+    if(!b) console.log("unable stop redis, please kill it if it exists, before starting the program again")
+}
 
 ///start the program
 export const app = {
-    start
+    start,
+    stop
 }
 
