@@ -1,4 +1,15 @@
 {
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
   "name": "wab",
   "version": "0.9.0",
   "description": "",
@@ -14,7 +25,12 @@
     "@types/ioredis": "^4.17.3",
     "@types/redis": "^2.8.27",
     "redis": "^3.0.2",
-    "ts-node": "^9.0.0",
+    "ts-node": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.3.0",
     "typescript": "^4.0.2"
   }
 }
