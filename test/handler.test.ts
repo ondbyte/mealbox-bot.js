@@ -1,6 +1,8 @@
-import {parseAddress,isAcknowledge} from "../src/handle/handler"
+import {isAcknowledge} from "../src/handle/handler"
+import { Address } from "../src/misc/address"
 
 test("parseAddress test", ()=>{
+    const a = new Address("")
     expect(parseAddress("bjhadjnj 570001")).toBe({address:"bjhadjnj",pin:"570001"})
     expect(parseAddress("bjhadjnj5700010")).toBe({address:"bjhadjnj",pin:""})
     expect(parseAddress("bjhadjnj570001dad")).toBe({address:"bjhadjnjdad",pin:"570001"})

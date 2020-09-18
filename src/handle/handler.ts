@@ -1,9 +1,10 @@
 import { ask, tell, regExp } from "../config"
+import {Address} from "../misc/address"
 
 async function register(expectReply: (reply: string) => Promise<string>, inform: (info: string) => Promise<void>) {
     var reply = ""
     var name = ""
-    var address:Address = {address:"",pin:""}
+    var address:Address
     var pin = ""
     ///ask name
     do {
@@ -16,21 +17,15 @@ async function register(expectReply: (reply: string) => Promise<string>, inform:
     ///ask address
     do {
         reply = await expectReply(ask.addrress)
-        address = parseAddress(reply)
-        if(address.pin.length==6)
+        address = new Address(reply)
+        if(!address.hasPin){
+            do{
+                reply = await expectReply(ask.pin)
+            } while (address.setPin(reply))
+        }
         reply = await expectReply(ask.confirmation)
     } while (!isAcknowledge(reply))
 
-    reply = await expectReply(ask.addrress)
-    var tmp = parseAddress(reply)
-    var address = ""
-    var pin = ""
-    if (tmp.length == 2) {
-        address = tmp[0]
-        pin = tmp[1]
-    } else {
-        address = tmp[0]
-    }
 
 }
 
@@ -43,13 +38,5 @@ export function isAcknowledge(s: string) {
         return true
     }
     return false
-}
-
-export function parseAddress(s: string): Address {
-    var matchs = s.match(regExp.pin)
-    if (matchs) {
-        return {address:s.replace(regExp.pin,"").trim(),pin:matchs[0]}
-    }
-    return {address:s.replace(regExp.pin,""),pin:""}
 }
 
