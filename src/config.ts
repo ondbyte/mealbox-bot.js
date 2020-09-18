@@ -18,6 +18,7 @@ export const ask = {
     addrress: "Please send us your address in one message",
     pin: "Please send us your PIN-code",
     location: "Send us your location for easier delivery",
+    confirmation: "Okay?"
     //number:"send other numbers (separated by a space) who wish to order from us, for every first order they place you'll receive ₹50 credit to order from us"
 }
 
