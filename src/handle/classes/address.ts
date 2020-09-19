@@ -1,8 +1,10 @@
-import {regExp} from "../config"
+import {regExp} from "../misc/regex"
+import {Location} from "../interfaces/interfaces" 
 
 export class Address {
     address: string | null = null
     pin: string | null = null
+    location: Location | null = null
 
     constructor(address: string) {
         this.setAddress(address)
@@ -13,6 +15,7 @@ export class Address {
     }
 
     setPin(s: string): boolean {
+        this.pin = null
         var matchs = s.match(regExp.pin)
         if(matchs!=null){
             this.pin = matchs[0]
@@ -30,5 +33,14 @@ export class Address {
             this.address = s
             return false
         }
+    }
+
+    setLocation(s:string): boolean {
+        var tmp = s.split(" ")
+        if(tmp.length!==2){
+            return false
+        }
+        this.location = {lat:tmp[0],lon:tmp[1]}
+        return true
     }
 }

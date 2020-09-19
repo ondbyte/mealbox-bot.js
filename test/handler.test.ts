@@ -1,11 +1,19 @@
-import {isAcknowledge} from "../src/handle/handler"
-import { Address } from "../src/misc/address"
+import {isAcknowledge} from "../src/handle/misc/helpers"
+import { Address } from "../src/handle/classes/address"
 
 test("parseAddress test", ()=>{
-    const a = new Address("")
-    expect(parseAddress("bjhadjnj 570001")).toBe({address:"bjhadjnj",pin:"570001"})
-    expect(parseAddress("bjhadjnj5700010")).toBe({address:"bjhadjnj",pin:""})
-    expect(parseAddress("bjhadjnj570001dad")).toBe({address:"bjhadjnjdad",pin:"570001"})
+    const a = new Address("bjhadjnj 570001")
+    expect(a.address).toBe("bjhadjnj")
+    expect(a.hasPin()).toBe(true)
+    expect(a.pin).toBe("570001")
+    expect(a.setAddress("dhshhsd570002hdh")).toBe(true)
+    expect(a.hasPin()).toBe(true)
+    expect(a.pin).toBe("570002")
+    expect(a.address).toBe("dhshhsdhdh")
+    expect(a.setAddress("asbdhbahb")).toBe(false)
+    expect(a.hasPin()).toBe(false)
+    expect(a.address).toBe("asbdhbahb")
+    expect(a.pin).toBe(null)
 })
 
 test("isAcknowledge test",()=>{

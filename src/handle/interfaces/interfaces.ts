@@ -1,4 +1,4 @@
-interface User {
+export interface User {
     user: string;
     name: string;
     address: string;
@@ -7,7 +7,7 @@ interface User {
     location: Location;
   }
   
-  interface Location {
+ export interface Location {
     lat: string;
     lon: string;
   }
